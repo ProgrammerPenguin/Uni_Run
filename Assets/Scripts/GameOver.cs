@@ -4,15 +4,34 @@ using UnityEngine;
 
 public class GameOver : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private GameObject[] _childs;
+    private int _childCount;
+    // 식 본문 : 한 줄일때만 가능하다. 
+    public void Activate()
     {
-        
+        for (int i = 0; i < _childCount; ++i)
+        {
+            _childs[i].SetActive(true);
+        }
+    } 
+    
+    void Awake()
+    {
+        _childCount = transform.childCount;
+        _childs = new GameObject[_childCount];
+
+        for (int i = 0; i < _childCount; ++i)
+        {
+            _childs[i] = transform.GetChild(i).gameObject;
+        }
+    }
+    void OnEnable()
+    {
+        GameManager.Instance.OnGameEnd.AddListener(Activate);    
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnDisble()
     {
-        
+        GameManager.Instance.OnGameEnd.RemoveListener(Activate);
     }
 }

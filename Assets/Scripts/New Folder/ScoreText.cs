@@ -12,9 +12,19 @@ public class ScoreText : MonoBehaviour
     {
         _ui = GetComponent<TextMeshProUGUI>();
     }
+
+    void OnEnable()
+    {
+        GameManager.Instance.OnScoreChanged.AddListener(UpdateText);
+    }
     // Update is called once per frame
     public void UpdateText(int score)
     {
         _ui.text = $"Score : {score}";
+    }
+
+    void OnDisable()
+    {
+        GameManager.Instance.OnScoreChanged.RemoveListener(UpdateText);
     }
 }
